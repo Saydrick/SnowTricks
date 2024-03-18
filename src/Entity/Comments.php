@@ -15,9 +15,6 @@ class Comments
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $user_id = null;
-
-    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
@@ -26,21 +23,17 @@ class Comments
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
 
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tricks $trick = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): static
-    {
-        $this->user_id = $user_id;
-
-        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -75,6 +68,30 @@ class Comments
     public function setMessage(string $message): static
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getUser(): ?users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?users $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTrick(): ?tricks
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?tricks $trick): static
+    {
+        $this->trick = $trick;
 
         return $this;
     }

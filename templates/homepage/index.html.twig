@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{# {% block title %}{% endblock %} #}
-
 {% block body %}
     {{ test }}
+
+    <div><a href="{{ path('tricks.create') }}">Ajouter une nouvelle figure</a></div>
 {% endblock %}

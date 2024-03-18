@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\TricksComments;
+use App\Entity\TypesMedia;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<TricksComments>
+ * @extends ServiceEntityRepository<TypesMedia>
  *
- * @method TricksComments|null find($id, $lockMode = null, $lockVersion = null)
- * @method TricksComments|null findOneBy(array $criteria, array $orderBy = null)
- * @method TricksComments[]    findAll()
- * @method TricksComments[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TypesMedia|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TypesMedia|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TypesMedia[]    findAll()
+ * @method TypesMedia[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TricksCommentsRepository extends ServiceEntityRepository
+class TypesMediaRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TricksComments::class);
+        parent::__construct($registry, TypesMedia::class);
     }
 
     //    /**
-    //     * @return TricksComments[] Returns an array of TricksComments objects
+    //     * @return TypesMedia[] Returns an array of TypesMedia objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -36,7 +36,7 @@ class TricksCommentsRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?TricksComments
+    //    public function findOneBySomeField($value): ?TypesMedia
     //    {
     //        return $this->createQueryBuilder('t')
     //            ->andWhere('t.exampleField = :val')
