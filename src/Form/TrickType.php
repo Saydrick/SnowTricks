@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use DateTimeZone;
 use App\Entity\Users;
 use App\Entity\Tricks;
 use DateTimeImmutable;
@@ -15,11 +16,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\Length;
 
 // use Symfony\Component\Validator\Constraints as Assert;
 
@@ -62,10 +63,13 @@ class TrickType extends AbstractType
     public function autoTimestamps(PostSubmitEvent $event): void
     {
         $data = $event->getData();
-        $data->setUpdatedAt(new DateTimeImmutable());
+     
+        $timezone = new DateTimeZone('Europe/Paris');
+
+        $data->setUpdatedAt(new DateTimeImmutable('now', $timezone));
         if(!$data->getId())
         {
-            $data->setCreatedAt(new DateTimeImmutable());
+            $data->setCreatedAt(new DateTimeImmutable('now', $timezone));
         }
     }
 
