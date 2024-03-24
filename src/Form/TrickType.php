@@ -2,10 +2,10 @@
 
 namespace App\Form;
 
-use App\Entity\users;
+use App\Entity\Users;
 use App\Entity\Tricks;
 use DateTimeImmutable;
-use App\Entity\trickGroups;
+use App\Entity\TrickGroups;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
@@ -17,34 +17,48 @@ use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Length;
+
+// use Symfony\Component\Validator\Constraints as Assert;
 
 class TrickType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('description')
+            ->add('name', TextType::class, [
+                'constraints' => [
+                    new Length(min: 10)
+                ]
+            ])
+            ->add('description', TextareaType::class)
+            ->add('user', EntityType::class, [
+                'class' => users::class,
+                'choice_label' => 'username',
+            ])
             ->add('trick_group', EntityType::class, [
-                'class' => TrickGroups::class,
+                'class' => trickGroups::class,
                 'choice_label' => 'label',
             ])
             ->add('save' , SubmitType::class, [
                 'label' => 'Créer'
             ])
-            ->addEventListener(FormEvents::PRE_SUBMIT, $this->autoSlug(...))
+            ->addEventListener(FormEvents::POST_SUBMIT, $this->autoSlug(...))
             ->addEventListener(FormEvents::POST_SUBMIT, $this->autoTimestamps(...))
         ;
     }
 
-    public function autoSlug(PreSubmitEvent $event): void
+    public function autoSlug(PostSubmitEvent $event): void
     {
-        $data = $event->getData();
+        $trick = $event->getData();
         $slugger = new AsciiSlugger();
-        $data['slug'] = strtolower($slugger->slug($data['title']));
-        $event->setData($data);
+        $slug = strtolower($slugger->slug($trick->getName()));
+        $trick->setSlug($slug);
     }
 
+    // TODO Modifier la timezone
     public function autoTimestamps(PostSubmitEvent $event): void
     {
         $data = $event->getData();

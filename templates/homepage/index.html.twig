@@ -1,7 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ test }}
+    {# Image d'accueil #}
+    <div class="banner">
+        <h2 id="h2_slogan">Texte de la page d'accueil</h2>
+        <button class="arrow" id="banner_arrow">
+            <a href="#content_tricks">&#x279C;</a>
+        </button>
+    </div>
 
-    <div><a href="{{ path('tricks.create') }}">Ajouter une nouvelle figure</a></div>
+
+    <div class="container-fluide" id="content_tricks">
+        {# Max 15 (les plus rencents) #}
+        <ul class="ul_tricks">
+            {% for trick in tricks %}
+                <div class="trick">
+                    <img src="{{ asset('img/pas-image-disponible.png') }}" alt="">
+                    <li class="li_tricks">
+                        <p>{{ trick.getname() }}</p>
+                        <div class="btn_edit">
+                            <button><img src="{{ asset('img/edit.png') }}" alt="Modifier"></button> {# TODO Ajouter des icones à la place des textes#}
+                            <button><img src="{{ asset('img/delete.png') }}" alt="Supprimer"></button>
+                        </div>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+
+        {# Bouton "voir plus" #}
+
+        <button class="arrow" id="content_arrow">
+            <a href="#content_tricks">&#x279C;</a>
+        </button>
+    </div>
+
 {% endblock %}

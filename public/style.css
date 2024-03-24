@@ -1,5 +1,9 @@
+/* BODY */
+a {
+    text-decoration: none;
+}
 
-
+/* HEADER */
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -10,4 +14,121 @@
     margin-right: 15px;
     width: 50px;
     border-radius: 30px;
+}
+
+
+/* HOMEPAGE */
+.banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 75px);
+    background-image: url('./img/homepage_banner.jpg');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    line-height: 50px;
+    text-align: center;
+}
+
+#h2_slogan {
+    text-align: center;
+    font-size: 48px;
+    color: white;
+    text-shadow:
+    black 1px 1px 2px,
+    black -1px 1px 2px,
+    black -1px -1px 2px,
+    black 1px -1px 2px;
+}
+
+.arrow {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    font-size: 30px;
+    border: 2px solid black;
+    background-color: transparent;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    line-height: 0; 
+    text-align: center;
+}
+
+.arrow a{
+    color: black;
+}
+
+.arrow:hover {
+    background-color: black;
+}
+
+.arrow a:hover {
+    color: white;
+}
+
+#banner_arrow {
+    transform: rotate(90deg);
+}
+
+#content_arrow {
+    transform: rotate(270deg);
+}
+
+#content_tricks {
+    position: relative;
+}
+
+.ul_tricks {
+    margin: 20px;
+    display: flex;
+    /* margin: 0;
+    padding: 0; */
+}
+
+.li_tricks {
+    list-style: none;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    margin: 5px;
+}
+
+.li_tricks p {
+    margin: 0;
+}
+
+.trick {
+    margin: 20px;
+    border: 1px solid black;
+}
+
+.trick img {
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+    border-bottom: 2px solid black;
+}
+
+.btn_edit {
+    display: flex;
+}
+
+.btn_edit button {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    border: none;
+    background-color: white;
+}
+
+.btn_edit button img {
+    width: 30px;
+    height: 30px;
+    border: none;
 }

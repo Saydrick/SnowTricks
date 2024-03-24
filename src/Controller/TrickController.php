@@ -25,12 +25,14 @@ class TrickController extends AbstractController
     public function create(Request $resquest, EntityManagerInterface $em): Response
     {
         $trick = new Tricks();
-        $form = $this->createForm(TrickType::class, $trick);
+        $form = $this->createForm(TrickType::class, $trick, ['allow_extra_fields' => true]);
         $form->handleRequest($resquest);
         if ($form->isSubmitted() && $form->isValid())
         {
+            $em->persist($trick);
             $em->flush();
             $this->addFlash('success', 'Le trick a bien été créé !');
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('trick/create.html.twig', [
