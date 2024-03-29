@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Tricks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,28 +22,27 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
-    //    /**
-    //     * @return Tricks[] Returns an array of Tricks objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+       /**
+        * @return Tricks[] Returns an array of Tricks objects
+        */
+       public function findByRecentTricks(): array
+       {
+           return $this->createQueryBuilder('t')
+               ->orderBy('t.updatedAt', 'DESC')
+               ->getQuery()
+               ->getResult()
+           ;
+       }
 
-    //    public function findOneBySomeField($value): ?Tricks
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+
+       public function paginateTricks(int $limit): Paginator
+       {
+            return new Paginator($this
+                ->createQueryBuilder('t')
+                ->orderBy('t.updatedAt', 'DESC')
+                ->setMaxResults($limit)
+                ->getQuery()
+                ->setHint(Paginator::HINT_ENABLE_DISTINCT, false)
+            );
+       }
 }

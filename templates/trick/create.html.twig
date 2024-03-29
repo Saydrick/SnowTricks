@@ -7,7 +7,17 @@
 
         <br><br>
 
-        {{ form(form) }}
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.user) }}
+            {{ form_row(form.trick_group) }}
+            {{ form_row(form.medias) }}
+            {{ form_row(form.save) }}
+
+        {{ form_end(form, {render_rest: false}) }}
     </div>
 
 {% endblock %}

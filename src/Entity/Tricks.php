@@ -43,7 +43,7 @@ class Tricks
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'trick')]
     private Collection $comments;
 
-    #[ORM\OneToMany(targetEntity: Medias::class, mappedBy: 'trick')]
+    #[ORM\OneToMany(targetEntity: Medias::class, mappedBy: 'trick', cascade: ['persist'])]
     private Collection $medias;
 
     public function __construct()
