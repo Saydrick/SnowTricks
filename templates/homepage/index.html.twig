@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {# {{ parent() }}  #}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('js/scrollToBottom.js') }}"></script>
+{% endblock %}
+
 {% block body %}
-    {# Image d'accueil #}
     <div class="banner">
         <h2 id="h2_slogan">Texte de la page d'accueil</h2>
         <button class="arrow" id="banner_arrow">
@@ -11,27 +16,43 @@
 
 
     <div class="container-fluide" id="content_tricks">
-        {# Max 15 (les plus rencents) #}
+        <h3 id="h3_TricksList">Les tricks récents</h3>
+
         <ul class="ul_tricks">
             {% for trick in tricks %}
                 <div class="trick">
                     <img src="{{ asset('img/pas-image-disponible.png') }}" alt="">
                     <li class="li_tricks">
-                        <p>{{ trick.getname() }}</p>
+                        <p>{{ trick.name }}</p>
                         <div class="btn_edit">
-                            <button><img src="{{ asset('img/edit.png') }}" alt="Modifier"></button> {# TODO Ajouter des icones à la place des textes#}
-                            <button><img src="{{ asset('img/delete.png') }}" alt="Supprimer"></button>
+                            <button>
+                                <a href="{{ path('tricks.edit', {id: trick.id, slug: trick.slug}) }}">
+                                    <img src="{{ asset('img/edit.png') }}" alt="Modifier">
+                                </a>
+                            </button>
+                            <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit">
+                                    <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
+                                </button>
+                            </form>
                         </div>
                     </li>
                 </div>
             {% endfor %}
         </ul>
 
-        {# Bouton "voir plus" #}
+        {% if limit < countEntity %}
+            <button id="btn_seeMore"><a href="{{ path('homepage', {limit: limit + 5}) }}">Voir plus</a></button>
+        {% endif %}
+        
+        <br><br>
 
         <button class="arrow" id="content_arrow">
             <a href="#content_tricks">&#x279C;</a>
         </button>
     </div>
+
+    <br><br>
 
 {% endblock %}

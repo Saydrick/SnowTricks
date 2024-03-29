@@ -40,17 +40,26 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('tricks/{id}/modifier', name: 'tricks.edit')]
+    #[Route('/tricks/{id}-{slug}/modifier', name: 'tricks.edit')]
     public function edit(Tricks $trick, Request $resquest, EntityManagerInterface $em)
     {
+        $form = $this->createForm(TrickType::class, $trick, ['allow_extra_fields' => true]);
+        $form->handleRequest($resquest);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $em->flush();
+            $this->addFlash('success', 'Le trick a bien été modifié !');
+            return $this->redirectToRoute('homepage');
+        }
 
         return $this->render('trick/edit.html.twig', [
             'trick' => $trick,
             'hello' => 'WIP',
+            'form' => $form,
         ]);
     }
 
-    #[Route('tricks/{id}/supprimer', name: 'tricks.remove', methods: ['DELETE'])]
+    #[Route('/tricks/{id}-{slug}/supprimer', name: 'tricks.remove', methods: ['DELETE'])]
     public function remove(Tricks $trick, EntityManagerInterface $em)
     {
         $em->remove($trick);
