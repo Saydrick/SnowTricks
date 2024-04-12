@@ -2,8 +2,38 @@
 
 {% block body %}
 
-    <div class="container my-4">
-        <h1>Il y'aura un formulaire pour ajouter de nouvelles figures ici !</h1>
+    <div class="container">
+        <div class="trick_banner">
+            <img src="{{ asset('img/pas-image-disponible.png') }}" id="img_banner">
+
+            <h2 id="h2_slogan">{{ trick.name }}</h2>
+
+            <div class="trick_edit">
+                <button>
+                    <a href="{{ path('tricks.edit', {id: trick.id, slug: trick.slug}) }}">
+                        <img src="{{ asset('img/edit.png') }}" alt="Modifier">
+                    </a>
+                </button>
+                <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit">
+                        <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <br><br>
+
+        <h2>{{ trick.description }}</h2>
+        <h2>{{ trick.createdAt|date("m/d/Y") }}</h2>
+        <h2>{{ trick.updatedAt|date("m/d/Y") }}</h2>
+        <h2>{{ trick.trickGroup.label }}</h2>
+
+        <hr>
+
+
+
     </div>
     
 {% endblock %}

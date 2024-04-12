@@ -23,28 +23,31 @@
                 <div class="trick">
                     <img src="{{ asset('img/pas-image-disponible.png') }}" alt="">
                     <li class="li_tricks">
-                        <p>{{ trick.name }}</p>
-                        <div class="btn_edit">
-                            <button>
-                                <a href="{{ path('tricks.edit', {id: trick.id, slug: trick.slug}) }}">
-                                    <img src="{{ asset('img/edit.png') }}" alt="Modifier">
-                                </a>
-                            </button>
-                            <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="POST">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit">
-                                    <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
+                        <a href="{{ path('tricks', {id: trick.id, slug: trick.slug}) }}">{{ trick.name }}</a>
+
+                        {% if app.user == trick.user %}
+                            <div class="btn_edit">
+                                <button>
+                                    <a href="{{ path('tricks.edit', {id: trick.id, slug: trick.slug}) }}">
+                                        <img src="{{ asset('img/edit.png') }}" alt="Modifier">
+                                    </a>
                                 </button>
-                            </form>
-                        </div>
+                                <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit">
+                                        <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
                     </li>
                 </div>
             {% endfor %}
         </ul>
 
-        {% if limit < countEntity %}
+        {# {% if limit < countEntity %}
             <button id="btn_seeMore"><a href="{{ path('homepage', {limit: limit + 5}) }}">Voir plus</a></button>
-        {% endif %}
+        {% endif %} #}
         
         <br><br>
 

@@ -4,20 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Tricks;
 use App\Form\TrickType;
+use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
+#[IsGranted('ROLE_USER')]
 class TrickController extends AbstractController
 {
-    #[Route('/tricks', name: 'tricks')]
-    public function show(): Response
+    #[Route('/tricks/{id}-{slug}', name: 'tricks')]
+    public function show(Tricks $trick): Response
     {
+        // dd($trick);
         return $this->render('trick/index.html.twig', [
-            'controller_name' => 'TrickController'
+            'trick' => $trick
         ]);
     }
 

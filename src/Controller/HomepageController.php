@@ -4,15 +4,19 @@ namespace App\Controller;
 
 use App\Repository\TricksRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomepageController extends AbstractController
 {
-    #[Route('/{limit}', methods: ['GET', 'HEAD'], name: 'homepage')]
-    public function index(TricksRepository $repository, int $limit = 15): Response
+    // #[Route('/{limit}', methods: ['GET', 'HEAD'], name: 'homepage')]
+    // public function index(TricksRepository $repository, int $limit = 15): Response
+    #[Route('/', methods: ['GET', 'HEAD'], name: 'homepage')]
+    public function index(TricksRepository $repository, Security $security): Response
     {
-        // $limit = 15;
+        // dd($security->getUser());
+        $limit = 15;
         $tricks = $repository->paginateTricks($limit);
 
         $countEntity = $tricks->count();

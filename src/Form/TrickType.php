@@ -15,6 +15,7 @@ use Symfony\Component\Form\Event\SubmitEvent;
 use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints\Length;
@@ -23,18 +24,20 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\HttpFoundation\Request;
 
 class TrickType extends AbstractType
 {
+    public function __construct(private Security $security)
+    {
+        
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('user', EntityType::class, [
-                'class' => users::class,
-                'choice_label' => 'username',
-            ])
             ->add('trick_group', EntityType::class, [
                 'class' => trickGroups::class,
                 'choice_label' => 'label',
@@ -50,6 +53,7 @@ class TrickType extends AbstractType
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, $this->autoSlug(...))
             ->addEventListener(FormEvents::POST_SUBMIT, $this->autoTimestamps(...))
+            ->addEventListener(FormEvents::POST_SUBMIT, $this->autoUser(...))
         ;
     }
 
@@ -72,6 +76,13 @@ class TrickType extends AbstractType
         {
             $data->setCreatedAt(new DateTimeImmutable('now', $timezone));
         }
+    }
+
+    public function autoUser(PostSubmitEvent $event): void
+    {
+        $trick = $event->getData();
+        $user = $this->security->getUser();
+        $trick->setUser($user);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
