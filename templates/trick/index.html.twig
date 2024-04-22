@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <div class="container">
+    <div class="container-fluide">
         <div class="trick_banner">
             <img src="{{ asset('img/pas-image-disponible.png') }}" id="img_banner">
 
@@ -22,18 +22,71 @@
                 </form>
             </div>
         </div>
+    </div>
+
+    <div class="container">
+
+        {# 
+            TODO Ajouter les autres images s'il y en a
+         #}
 
         <br><br>
 
         <h2>{{ trick.description }}</h2>
-        <h2>{{ trick.createdAt|date("m/d/Y") }}</h2>
-        <h2>{{ trick.updatedAt|date("m/d/Y") }}</h2>
-        <h2>{{ trick.trickGroup.label }}</h2>
 
-        <hr>
+        <br><br>
 
+        <div class="info_trick">
+            <span class="span_trick">{{ trick.trickGroup.label }}</span>
+            <span class="trick_creation">
+                Publié le {{ trick.createdAt|date("j F Y") }} par <strong>{{ trick.user.username }}</strong>
+            
+                {% if trick.createdAt != trick.updatedAt %}
+                    <span class="modify_trick">modifié le {{ trick.updatedAt|date("j F Y") }}</span>
+                {% endif %}
+            </span>
+            
+        </div>
 
+        <div class="comments">
+            <hr>
+
+            {% if app.user %}
+                {{ form_start(commentForm) }}
+                    <div class="comment_form">
+                        <div class="comment_message">{{ form_row(commentForm.message) }}</div>
+                        <div class="comment_save">{{ form_row(commentForm.save) }}</div>
+                    </div>
+                {{ form_end(commentForm) }}
+            {% else %}
+                <h3>Vous devez être connecté pour écrire un commentaire</h3>
+            {% endif %}
+            
+            <hr>
+
+            {% if comments %}
+                {% for comment in comments %}
+                    <div id="comment_bloc">
+                        <div class="comments_trick">
+                            <span><strong>{{ comment.username }}</strong> le {{ comment.updatedAt|date("j F Y") }}</span>
+                            <br>
+                            &emsp;&emsp; {{ comment.message }}
+                        </div>
+                        <br>           
+
+                        {# TODO PAGINATION #}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h3>Soyez le premier à commenter cette figure !</h3>    
+            
+            {% endif %}
+        </div>
+
+        
 
     </div>
+
+    <br><br><br><br><br><br>
     
 {% endblock %}

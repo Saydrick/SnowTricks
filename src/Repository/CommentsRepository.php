@@ -21,9 +21,22 @@ class CommentsRepository extends ServiceEntityRepository
         parent::__construct($registry, Comments::class);
     }
 
-    //    /**
-    //     * @return Comments[] Returns an array of Comments objects
-    //     */
+       /**
+        * @return Comments[] Returns an array of Comments objects
+        */
+        public function findByRecentComments($trick): array
+        {
+            return $this->createQueryBuilder('c')
+                ->select('c.message', 'c.updatedAt', 'u.username')
+                ->join('c.user', 'u')
+                ->where('c.trick = :trick')
+                ->setParameter('trick', $trick)
+                ->orderBy('c.updatedAt', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
     //    public function findByExampleField($value): array
     //    {
     //        return $this->createQueryBuilder('c')

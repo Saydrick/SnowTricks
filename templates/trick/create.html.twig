@@ -7,19 +7,41 @@
 
         <br><br>
 
-        {{ form(form) }}
+        {# {{ form(form) }} #}
 
-        {# {{ form_start(form) }}
+        {{ form_start(form) }}
             {{ form_errors(form) }}
 
-            {{ form_row(form.name) }}
+            {# {{ form_row(form.name) }}
             {{ form_row(form.description) }}
-            {{ form_row(form.user) }}
-            {{ form_row(form.trick_group) }}
+            {{ form_row(form.trick_group) }} #}
             {{ form_row(form.medias) }}
             {{ form_row(form.save) }}
 
-        {{ form_end(form, {render_rest: false}) }} #}
+        {{ form_end(form) }}
+
+        {{ dump(form) }}
     </div>
 
 {% endblock %}
+
+
+{#  
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        <div id="medias">
+            {{ form_label(form.medias) }}
+            <div id="medias-fields" data-prototype="{{ form_widget(form.medias.vars.prototype)|e }}">
+                {% for mediaForm in form.medias %}
+                    <div>
+                        {{ form_row(mediaForm.path) }}
+                        {{ form_row(mediaForm.type_media) }}
+                    </div>
+                {% endfor %}
+            </div>
+            <a href="#" id="add_media">Add Media</a>
+        </div>
+        {{ form_row(form.save) }}
+    {{ form_end(form) }}
+ #}

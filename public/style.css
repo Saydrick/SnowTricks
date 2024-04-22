@@ -17,6 +17,9 @@ a {
     border-radius: 30px;
 }
 
+.flex {
+    display: flex;
+}
 
 /* HOMEPAGE */
 .banner {
@@ -180,4 +183,62 @@ a {
     position: absolute;
     top: 30px;
     right: 30px;
+}
+
+.info_trick {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.span_trick {
+    width: auto;
+    margin: 15px;
+    padding: 5px 10px 5px 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: lightgrey;
+    color: black;
+}
+
+.trick_creation {
+    margin: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.modify_trick {
+    font-style: italic;
+}
+
+.comments {
+    width: 75%;
+    margin: auto;
+}
+
+.comment_form {
+    display: flex;
+}
+
+.comment_message {
+    margin: auto;
+    width: 65%;
+}
+
+.comment_save {
+    margin: auto;
+    margin-left: 0;
+}
+
+#comment_bloc {
+    width: 75%;
+    margin: auto;    
+}
+
+.comments_trick {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;    
 }
