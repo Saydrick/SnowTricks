@@ -1,10 +1,20 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {# {{ parent() }}  #}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('js/galleryMedias.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 
     <div class="container-fluide">
         <div class="trick_banner">
-            <img src="{{ asset('img/pas-image-disponible.png') }}" id="img_banner">
+            {% if firstMedia %}
+                <img src="../../{{ firstMedia.path }}" id="img_banner">
+            {% else %}
+                <img src="{{ asset('img/pas-image-disponible.png') }}" id="img_banner">
+            {% endif %}
 
             <h2 id="h2_slogan">{{ trick.name }}</h2>
 
@@ -24,13 +34,27 @@
         </div>
     </div>
 
+    <br><br>
+
+    {% if medias %}
+        
+        <div class="gallery">
+            <div class="gallery-container">
+                <div class="gallery-images">
+                    {% for media in medias %}
+                        <img src="../../{{ media.path }}">
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="prev">&lt;</button>
+            <button class="next">&gt;</button>
+        </div>
+
+    {% endif %}
+
+    <br><br>
+    
     <div class="container">
-
-        {# 
-            TODO Ajouter les autres images s'il y en a
-         #}
-
-        <br><br>
 
         <h2>{{ trick.description }}</h2>
 
@@ -39,10 +63,10 @@
         <div class="info_trick">
             <span class="span_trick">{{ trick.trickGroup.label }}</span>
             <span class="trick_creation">
-                Publié le {{ trick.createdAt|date("j F Y") }} par <strong>{{ trick.user.username }}</strong>
+                Publié le {{ trick.createdAt|date("j/m/Y") }} par <strong>{{ trick.user.username }}</strong>
             
                 {% if trick.createdAt != trick.updatedAt %}
-                    <span class="modify_trick">modifié le {{ trick.updatedAt|date("j F Y") }}</span>
+                    <span class="modify_trick">modifié le {{ trick.updatedAt|date("j/m/Y") }}</span>
                 {% endif %}
             </span>
             
@@ -67,16 +91,46 @@
             {% if comments %}
                 {% for comment in comments %}
                     <div id="comment_bloc">
+                        <div class="comments_profil">
+                            {% if comment.photo %}
+                                <img src="{{ asset(''~ comment.photo ~'') }}" class="comment_photo">
+                            {% else %}
+                                <img src="{{ asset('img/users/inconnu.jpg') }}" class="comment_photo">
+                            {% endif %}
+                        </div>
                         <div class="comments_trick">
                             <span><strong>{{ comment.username }}</strong> le {{ comment.updatedAt|date("j F Y") }}</span>
                             <br>
                             &emsp;&emsp; {{ comment.message }}
                         </div>
                         <br>           
-
-                        {# TODO PAGINATION #}
                     </div>
                 {% endfor %}
+
+                <nav aria-label="Page navigation example" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {# Bouton Précédent #}
+                        <li class="page-item {% if currentPage == 1 %}disabled{% endif %}">
+                            <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: currentPage - 1 }) }}" aria-label="Précédent">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        {# Pages de la pagination #}
+                        {% for page in 1..totalPages %}
+                            <li class="page-item {% if page == currentPage %}active{% endif %}">
+                                <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: page }) }}">{{ page }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {# Bouton Suivant #}
+                        <li class="page-item {% if currentPage == totalPages %}disabled{% endif %}">
+                            <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: currentPage + 1 }) }}" aria-label="Suivant">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             {% else %}
                 <h3>Soyez le premier à commenter cette figure !</h3>    
             

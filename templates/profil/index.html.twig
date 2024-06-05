@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        {{ user.id }}
+        <br>
+        {{ user.username }}
+        <br>
+        {{ user.email }}
+        <br>
+        {{ user.isverified }}
+
+        <br><br>
+
+        <div class="user_photo-container">
+            {% if user.photo %}
+                <img src="{{ asset(''~ user.photo ~'') }}" class="user_photo">
+            {% else %}
+                <img src="{{ asset('img/users/inconnu.jpg') }}" class="user_photo">
+            {% endif %}
+        </div>
+
+        <br>
+
+        <button><a href="{{ path('app_profil_edit', {username: app.user.username}) }}">MODIFIER</a></button>
+
+        
+    </div>
+
+{% endblock %}

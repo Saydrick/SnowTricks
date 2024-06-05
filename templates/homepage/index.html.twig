@@ -21,7 +21,15 @@
         <ul class="ul_tricks">
             {% for trick in tricks %}
                 <div class="trick">
-                    <img src="{{ asset('img/pas-image-disponible.png') }}" alt="">
+                    {% set media = medias[trick.id] ?? null %}
+                    <a href="{{ path('tricks', {id: trick.id, slug: trick.slug}) }}">
+                        {% if media %}
+                            <img src="{{ asset(''~ media.path ~'') }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('img/pas-image-disponible.png') }}" alt="">
+                        {% endif %}
+                    </a>
+                    
                     <li class="li_tricks">
                         <a href="{{ path('tricks', {id: trick.id, slug: trick.slug}) }}">{{ trick.name }}</a>
 
@@ -40,14 +48,18 @@
                                 </form>
                             </div>
                         {% endif %}
-                    </li>
+                    </li> 
+
+
+
+
                 </div>
             {% endfor %}
         </ul>
 
-        {# {% if limit < countEntity %}
+        {% if limit < countEntity %}
             <button id="btn_seeMore"><a href="{{ path('homepage', {limit: limit + 5}) }}">Voir plus</a></button>
-        {% endif %} #}
+        {% endif %}
         
         <br><br>
 

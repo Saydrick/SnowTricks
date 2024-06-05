@@ -27,7 +27,7 @@ class CommentsRepository extends ServiceEntityRepository
         public function findByRecentComments($trick): array
         {
             return $this->createQueryBuilder('c')
-                ->select('c.message', 'c.updatedAt', 'u.username')
+                ->select('c.message', 'c.updatedAt', 'u.username', 'u.photo')
                 ->join('c.user', 'u')
                 ->where('c.trick = :trick')
                 ->setParameter('trick', $trick)

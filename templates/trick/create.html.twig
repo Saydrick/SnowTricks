@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {# {{ parent() }}  #}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('js/addMedias.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 
     <div class="container my-4">
@@ -7,41 +13,37 @@
 
         <br><br>
 
-        {# {{ form(form) }} #}
-
         {{ form_start(form) }}
-            {{ form_errors(form) }}
 
-            {# {{ form_row(form.name) }}
+            {{ form_row(form.name) }}
             {{ form_row(form.description) }}
-            {{ form_row(form.trick_group) }} #}
-            {{ form_row(form.medias) }}
+            {{ form_row(form.trick_group) }}
+
+            <div id="medias">
+                <div id="medias-fields" data-prototype='{{ form_widget(form.medias.vars.prototype) }}'>
+                    <div class="flex">
+                        {% for mediaForm in form.medias %}
+                            <div>
+                                <div class="file-upload">
+                                    {{ form_widget(mediaForm.mediaFile, { 'attr': {'class': 'file-input'} }) }}
+                                    <label for="{{ mediaForm.mediaFile.vars.id }}">
+                                        <div class="plus-sign">+</div>
+                                    </label>
+                                </div>
+                                {{ form_row(mediaForm.type_media, { 'label': false }) }}
+                            </div>
+                        {% endfor %}
+                        <a href="#" id="add_media">Ajouter un  média</a>
+                    </div>
+                </div>
+            </div>
+            
+            {{ form_row(form._token) }}
             {{ form_row(form.save) }}
 
-        {{ form_end(form) }}
+        {{ form_end(form, {'render_rest': false}) }}
 
-        {{ dump(form) }}
     </div>
 
 {% endblock %}
 
-
-{#  
-    {{ form_start(form) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.description) }}
-        <div id="medias">
-            {{ form_label(form.medias) }}
-            <div id="medias-fields" data-prototype="{{ form_widget(form.medias.vars.prototype)|e }}">
-                {% for mediaForm in form.medias %}
-                    <div>
-                        {{ form_row(mediaForm.path) }}
-                        {{ form_row(mediaForm.type_media) }}
-                    </div>
-                {% endfor %}
-            </div>
-            <a href="#" id="add_media">Add Media</a>
-        </div>
-        {{ form_row(form.save) }}
-    {{ form_end(form) }}
- #}

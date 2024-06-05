@@ -22,9 +22,12 @@
 	<body>
 		{% include "header.html.twig" %}
 
-		{% include "partials/flash.html.twig" %}
-        			
-		{% block body %}{% endblock %}
+		<main>
+			{% include "partials/flash.html.twig" %}
+						
+			{% block body %}{% endblock %}
+		</main>
 
+		{% include "footer.html.twig" %}
     </body>
 </html>

@@ -1,10 +1,116 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {# {{ parent() }}  #}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('js/addMedias.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 
-    <div class="container my-4">
-        <h1>{{ hello }}</h1>
+    {{ form_start(form) }}
+
+        <div class="container-fluide">
+            <div class="trick_banner">
+                {% if firstMedia %}
+                    <img src="../../{{ firstMedia.path }}" id="img_banner">
+                {% else %}
+                    <img src="{{ asset('img/pas-image-disponible.png') }}" id="img_banner">
+                {% endif %}
+
+                <h2 id="h2_slogan">{{ form_row(form.name, { 'label': false }) }}</h2>
+            </div>
+        </div>
+
         <br><br>
-        {{ form(form) }}
-    </div>
+
+        <div class="container">
+
+            {% if medias %}
+        
+                <ul class="ul_medias">
+                    {% for media in medias %}
+                        <li class="li_medias">
+                            <div class="media">
+                                <img src="../../{{ media.path }}">
+
+                                <div class="media_btn_edit">
+                                    <button>
+                                        <a href="#">
+                                            <img src="{{ asset('img/edit.png') }}" alt="Modifier">
+                                        </a>
+                                    </button>
+                                    <button>
+                                        <a href="#">
+                                            <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
+                                        </a>
+                                    </button>
+                                </div>
+                            </div>
+                        </li> 
+                    {% endfor %}
+                </ul>
+
+            {% endif %}
+
+            <br><br>
+
+            <div id="medias">
+                <button class="btn btn-primary btn_media">
+                    <a href="#" id="add_media">Ajouter un média</a>
+                </button>
+                <br>
+                <div id="medias-fields" data-prototype='{{ form_widget(form.medias.vars.prototype) }}'></div>
+            </div>
+
+            <br><br>
+
+            <h2>{{ form_row(form.description, { 'label': false }) }}</h2>
+
+            <br><br>
+
+            <div class="info_trick">
+                <span class="span_trick">{{ form_row(form.trick_group, { 'label': false }) }}</span>
+                <span class="trick_creation">
+                    Publié le {{ trick.createdAt|date("j/m/Y") }} par <strong>{{ trick.user.username }}</strong>
+                
+                    {% if trick.createdAt != trick.updatedAt %}
+                        <span class="modify_trick">modifié le {{ trick.updatedAt|date("j/m/Y") }}</span>
+                    {% endif %}
+                </span>
+                
+            </div>
+        </div>
+
+        {{ form_row(form._token) }}
+        {{ form_row(form.save) }}
+
+    {{ form_end(form, {'render_rest': false}) }}
+
+    {# <div class="container my-4">
+
+        {{ form_start(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.trick_group) }}
+
+            <div id="medias">
+                <div id="medias-fields" data-prototype='{{ form_widget(form.medias.vars.prototype) }}'>
+                    {% for mediaForm in form.medias %}
+                        <div>
+                            {{ form_row(mediaForm.type_media) }}
+                            {{ form_row(mediaForm.mediaFile) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <a href="#" id="add_media">Add Media</a>
+            </div>
+            
+            {{ form_row(form._token) }}
+            {{ form_row(form.save) }}
+
+        {{ form_end(form, {'render_rest': false}) }}
+        
+    </div> #}
 {% endblock %}

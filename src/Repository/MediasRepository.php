@@ -36,13 +36,28 @@ class MediasRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Medias
-    //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+       public function findOneByTrick($value): ?Medias
+       {
+           return $this->createQueryBuilder('m')
+               ->andWhere('m.trick = :val')
+               ->andWhere('m.type_media = 1')
+               ->setParameter('val', $value)
+               ->orderBy('m.path')
+               ->setMaxResults(1)
+               ->getQuery()
+               ->getOneOrNullResult()
+           ;
+       }
+
+       public function findAllMediasForTrickExceptFirst($value): array
+       {
+            return $this->createQueryBuilder('m')
+                ->andWhere('m.trick = :val')
+                ->setParameter('val', $value)
+                ->orderBy('m.id', 'ASC')
+                ->setFirstResult(1)
+                ->getQuery()
+                ->getResult()
+            ;
+       }
 }

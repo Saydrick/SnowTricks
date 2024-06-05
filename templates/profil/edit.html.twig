@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        {{ user.id }}
+        <br>
+        {{ user.username }}
+        <br>
+        {{ user.email }}
+        <br>
+        {{ user.isverified }}
+
+        <br><br>
+
+        {{ form_start(user_form) }}
+            <div class="user_photo-container">
+                {% if user.photo %}
+                    <img src="{{ asset(''~ user.photo ~'') }}" class="user_photo">
+                {% else %}
+                    <img src="{{ asset('img/users/inconnu.jpg') }}" class="user_photo">
+                {% endif %}
+                    {{ form_widget(user_form.mediaFile, { 'attr': { 'class': 'file-input', 'id': 'fileInput' } }) }}
+            </div>
+
+            <br>
+
+            {{ form_widget(user_form.save, { 'attr': { 'id': 'submit-button' } }) }}
+        {{ form_end(user_form) }}
+
+        
+    </div>
+
+{% endblock %}
