@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-    {# {{ parent() }}  #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ asset('js/addMedias.js') }}"></script>
 {% endblock %}
@@ -13,7 +12,7 @@
         <div class="container-fluide">
             <div class="trick_banner">
                 {% if firstMedia %}
-                    <img src="../../{{ firstMedia.path }}" id="img_banner">
+                    <img src="{{ asset(''~ firstMedia.path ~'') }}" id="img_banner">
                 {% else %}
                     <img src="{{ asset('img/pas-image-disponible.png') }}" id="img_banner">
                 {% endif %}
@@ -32,16 +31,20 @@
                     {% for media in medias %}
                         <li class="li_medias">
                             <div class="media">
-                                <img src="../../{{ media.path }}">
+                                {% if media.typemedia.id == 1 %}
+                                    <img src="{{ asset(''~ media.path ~'') }}">
+                                {% else %}
+                                    <embed src="{{ asset(''~ media.path ~'') }}">
+                                {% endif %}
 
                                 <div class="media_btn_edit">
-                                    <button>
-                                        <a href="#">
+                                    <button type="button">
+                                        <a href="{{ path('app_media_edit', {id: media.id}) }}">
                                             <img src="{{ asset('img/edit.png') }}" alt="Modifier">
                                         </a>
                                     </button>
-                                    <button>
-                                        <a href="#">
+                                    <button type="button">
+                                        <a href="{{ path('app_media_delete', {id: media.id}) }}">
                                             <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
                                         </a>
                                     </button>
@@ -83,34 +86,17 @@
         </div>
 
         {{ form_row(form._token) }}
-        {{ form_row(form.save) }}
 
-    {{ form_end(form, {'render_rest': false}) }}
+        <br><br>
 
-    {# <div class="container my-4">
+        <div class="flex center">
+            {{ form_row(form.save, { 'label': 'Modifier' }) }}
 
-        {{ form_start(form) }}
+            {{ form_end(form, {'render_rest': false}) }}
 
-            {{ form_row(form.name) }}
-            {{ form_row(form.description) }}
-            {{ form_row(form.trick_group) }}
-
-            <div id="medias">
-                <div id="medias-fields" data-prototype='{{ form_widget(form.medias.vars.prototype) }}'>
-                    {% for mediaForm in form.medias %}
-                        <div>
-                            {{ form_row(mediaForm.type_media) }}
-                            {{ form_row(mediaForm.mediaFile) }}
-                        </div>
-                    {% endfor %}
-                </div>
-                <a href="#" id="add_media">Add Media</a>
-            </div>
-            
-            {{ form_row(form._token) }}
-            {{ form_row(form.save) }}
-
-        {{ form_end(form, {'render_rest': false}) }}
-        
-    </div> #}
+            {# {{ form_start(deleteForm) }}
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            {{ form_end(deleteForm) }} #}
+        </div>
+    
 {% endblock %}

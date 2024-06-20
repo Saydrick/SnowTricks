@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-    {# {{ parent() }}  #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ asset('js/galleryMedias.js') }}"></script>
+    <script src="{{ asset('js/viewMedias.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -11,7 +11,7 @@
     <div class="container-fluide">
         <div class="trick_banner">
             {% if firstMedia %}
-                <img src="../../{{ firstMedia.path }}" id="img_banner">
+                <img src="{{ asset(''~ firstMedia.path ~'') }}" id="img_banner">
             {% else %}
                 <img src="{{ asset('img/pas-image-disponible.png') }}" id="img_banner">
             {% endif %}
@@ -24,8 +24,7 @@
                         <img src="{{ asset('img/edit.png') }}" alt="Modifier">
                     </a>
                 </button>
-                <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="POST">
-                    <input type="hidden" name="_method" value="DELETE">
+                <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="DELETE">
                     <button type="submit">
                         <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
                     </button>
@@ -38,11 +37,16 @@
 
     {% if medias %}
         
+        <button class="show-media-button">Voir médias</button>  
         <div class="gallery">
             <div class="gallery-container">
                 <div class="gallery-images">
                     {% for media in medias %}
-                        <img src="../../{{ media.path }}">
+                        {% if media.typemedia.id == 1 %}
+                            <img src="{{ asset(''~ media.path ~'') }}">
+                        {% else %}
+                            <embed src="{{ asset(''~ media.path ~'') }}">
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -109,21 +113,21 @@
 
                 <nav aria-label="Page navigation example" class="mt-4">
                     <ul class="pagination justify-content-center">
-                        {# Bouton Précédent #}
+                        {# Previous button #}
                         <li class="page-item {% if currentPage == 1 %}disabled{% endif %}">
                             <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: currentPage - 1 }) }}" aria-label="Précédent">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
 
-                        {# Pages de la pagination #}
+                        {# Pagination pages #}
                         {% for page in 1..totalPages %}
                             <li class="page-item {% if page == currentPage %}active{% endif %}">
                                 <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: page }) }}">{{ page }}</a>
                             </li>
                         {% endfor %}
 
-                        {# Bouton Suivant #}
+                        {# Next button #}
                         <li class="page-item {% if currentPage == totalPages %}disabled{% endif %}">
                             <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: currentPage + 1 }) }}" aria-label="Suivant">
                                 <span aria-hidden="true">&raquo;</span>

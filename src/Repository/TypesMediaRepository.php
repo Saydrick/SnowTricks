@@ -21,28 +21,14 @@ class TypesMediaRepository extends ServiceEntityRepository
         parent::__construct($registry, TypesMedia::class);
     }
 
-    //    /**
-    //     * @return TypesMedia[] Returns an array of TypesMedia objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?TypesMedia
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findOneByLabel($label): ?TypesMedia
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.label = :val')
+            ->setParameter('val', $label)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
 }

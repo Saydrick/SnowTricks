@@ -2,15 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Users;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Constraints\File;
 
-class UserType extends AbstractType
+class NewMediaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -18,19 +16,17 @@ class UserType extends AbstractType
             ->add('mediaFile', FileType::class, [
                 'required' => false,
                 'mapped' => false,
-                'multiple' => false,
-                'constraints' => [
-                    new File([
-                        'extensions' => [
-                            'png',
-                            'jpg',
-                        ],
-                        'extensionsMessage' => 'Le fichier sélectionné n\'est pas une image',
-                    ])
-                ]
+                'multiple' => true
+                // 'attr'     => [
+                //     'accept' => 'image/*',
+                //     'multiple' => 'multiple'
+                // ],
+                // 'constraints' => [
+                //     new File()
+                // ],
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Valider les modifications'
+                'label' => 'Enregistrer le nouveau fichier'
             ])
         ;
     }
@@ -38,7 +34,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Users::class,
+            // Configure your form options here
         ]);
     }
 }

@@ -26,7 +26,6 @@ class Comments
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Tricks $trick = null;
-
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $user = null;
@@ -92,7 +91,6 @@ class Comments
     public function setUser(?Users $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 }

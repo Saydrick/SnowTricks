@@ -41,37 +41,27 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
        /**
         * @return Users[] Returns an array of Users objects
         */
-       public function findOneByEmail($value): array
-       {
-           return $this->createQueryBuilder('u')
-               ->andWhere('u.email = :val')
-               ->setParameter('val', $value)
-               ->orderBy('u.id', 'ASC')
-               ->setMaxResults(1)
-               ->getQuery()
-               ->getResult()
-           ;
-       }
+    public function findOneByEmail($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
-       public function findOneByID($value): array
-       {
-           return $this->createQueryBuilder('u')
-               ->andWhere('u.id = :val')
-               ->setParameter('val', $value)
-               ->orderBy('u.id', 'ASC')
-               ->setMaxResults(1)
-               ->getQuery()
-               ->getResult()
-           ;
-       }
-
-    //    public function findOneBySomeField($value): ?Users
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findOneByID($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

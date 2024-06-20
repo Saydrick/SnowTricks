@@ -16,10 +16,9 @@ class JWTService
      * @return string
      */
 
-     public function generate(array $header, array $payload, string $secret, int $validity = 2160 /*30min*/): string
-     {
-        if($validity > 0)
-        {
+    public function generate(array $header, array $payload, string $secret, int $validity = 2160 /*30min*/): string
+    {
+        if ($validity > 0) {
             $timezone = new DateTimeZone('Europe/Paris');
             $now = new DateTimeImmutable('now', $timezone);
             $exp = $now->getTimestamp() + $validity;
@@ -47,51 +46,51 @@ class JWTService
         $jwt = $base64Header . '%2e' . $base64Payload . '%2e' . $signature;
 
         return $jwt;
-     }
+    }
 
-     public function isValid(string $token): bool
-     {
+    public function isValid(string $token): bool
+    {
         return preg_match(
             '/^[a-zA-Z0-9\-\_\=]+%2e[a-zA-Z0-9\-\_\=]+%2e[a-zA-Z0-9\-\_\=]+$/',
             $token
         ) === 1;
-     }
+    }
 
-     public function getHeader(string $token): array
-     {
+    public function getHeader(string $token): array
+    {
         $array = explode('%2e', $token);
 
         $header = json_decode(base64_decode($array[0]), true);
 
         return $header;
-     }
+    }
 
-     public function getPayload(string $token): array
-     {
+    public function getPayload(string $token): array
+    {
         $array = explode('%2e', $token);
 
         $payload = json_decode(base64_decode($array[1]), true);
 
         return $payload;
-     }
+    }
 
-     public function isExpired(string $token): bool
-     {
+    public function isExpired(string $token): bool
+    {
         $payload = $this->getPayload($token);
 
         $timezone = new DateTimeZone('Europe/Paris');
         $now = new DateTimeImmutable('now', $timezone);
 
         return $payload['exp'] < $now->getTimestamp();
-     }
+    }
 
-     public function check(string $token, string $secret)
-     {
+    public function check(string $token, string $secret)
+    {
         $header = $this->getHeader($token);
         $payload = $this->getPayload($token);
 
         $verifToken = $this->generate($header, $payload, $secret, 0);
 
         return $token === $verifToken;
-     }
+    }
 }

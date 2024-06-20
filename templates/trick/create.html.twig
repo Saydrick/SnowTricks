@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-    {# {{ parent() }}  #}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ asset('js/addMedias.js') }}"></script>
 {% endblock %}
@@ -30,7 +29,6 @@
                                         <div class="plus-sign">+</div>
                                     </label>
                                 </div>
-                                {{ form_row(mediaForm.type_media, { 'label': false }) }}
                             </div>
                         {% endfor %}
                         <a href="#" id="add_media">Ajouter un  média</a>

@@ -24,15 +24,17 @@ class TrickType extends AbstractType
 {
     public function __construct(private Security $security)
     {
-        
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'label' => 'Nom de la figure',
+            ])
             ->add('description', TextareaType::class)
             ->add('trick_group', EntityType::class, [
+                'label' => 'Groupe de figure',
                 'class' => trickGroups::class,
                 'choice_label' => 'label',
             ])
@@ -45,7 +47,7 @@ class TrickType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
-            ->add('save' , SubmitType::class, [
+            ->add('save', SubmitType::class, [
                 'label' => 'Créer'
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, $this->autoSlug(...))
@@ -65,12 +67,11 @@ class TrickType extends AbstractType
     public function autoTimestamps(PostSubmitEvent $event): void
     {
         $data = $event->getData();
-     
+
         $timezone = new DateTimeZone('Europe/Paris');
 
         $data->setUpdatedAt(new DateTimeImmutable('now', $timezone));
-        if(!$data->getId())
-        {
+        if (!$data->getId()) {
             $data->setCreatedAt(new DateTimeImmutable('now', $timezone));
         }
     }

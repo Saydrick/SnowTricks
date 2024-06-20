@@ -39,7 +39,12 @@ class Tricks
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'trick')]
     private Collection $comments;
 
-    #[ORM\OneToMany(targetEntity: Medias::class, mappedBy: 'trick', cascade: ['persist'])]
+    #[ORM\OneToMany(
+        targetEntity: Medias::class,
+        mappedBy: 'trick',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
     private Collection $medias;
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]

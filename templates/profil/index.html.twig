@@ -2,16 +2,7 @@
 
 {% block body %}
 
-    <div class="container">
-        {{ user.id }}
-        <br>
-        {{ user.username }}
-        <br>
-        {{ user.email }}
-        <br>
-        {{ user.isverified }}
-
-        <br><br>
+    <div class="container flex profil">
 
         <div class="user_photo-container">
             {% if user.photo %}
@@ -19,12 +10,14 @@
             {% else %}
                 <img src="{{ asset('img/users/inconnu.jpg') }}" class="user_photo">
             {% endif %}
+            <br>
+            <button class="btn btn-primary"><a href="{{ path('app_profil_edit', {username: app.user.username}) }}">Modifier la photo de profil</a></button>
         </div>
 
-        <br>
-
-        <button><a href="{{ path('app_profil_edit', {username: app.user.username}) }}">MODIFIER</a></button>
-
+        <div class="user_info-container">
+            <p id="profil_username">{{ user.username|upper }}</p>
+            <p id="profil_email">{{ user.email }}</p>
+        </div>
         
     </div>
 

@@ -23,9 +23,8 @@ class CommentType extends AbstractType
 {
     public function __construct(private Security $security)
     {
-        
     }
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -33,7 +32,7 @@ class CommentType extends AbstractType
                 'label' => false
             ])
             ->add('trick', HiddenType::class)
-            ->add('save' , SubmitType::class, [
+            ->add('save', SubmitType::class, [
                 'label' => 'Commenter'
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, $this->autoTimestamps(...))
@@ -44,12 +43,11 @@ class CommentType extends AbstractType
     public function autoTimestamps(PostSubmitEvent $event): void
     {
         $data = $event->getData();
-     
+
         $timezone = new DateTimeZone('Europe/Paris');
 
         $data->setUpdatedAt(new DateTimeImmutable('now', $timezone));
-        if(!$data->getId())
-        {
+        if (!$data->getId()) {
             $data->setCreatedAt(new DateTimeImmutable('now', $timezone));
         }
     }

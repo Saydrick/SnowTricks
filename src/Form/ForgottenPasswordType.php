@@ -14,7 +14,7 @@ class ForgottenPasswordType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('save' , SubmitType::class, [
+            ->add('save', SubmitType::class, [
                 'label' => 'Envoyer le mail'
             ])
         ;

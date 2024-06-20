@@ -16,7 +16,7 @@ class ResetPasswordType extends AbstractType
             ->add('password', PasswordType::class, [
                 'label' => 'Saisissez votre nouveau mot de passe'
             ])
-            ->add('save' , SubmitType::class, [
+            ->add('save', SubmitType::class, [
                 'label' => 'Modifier'
             ])
         ;
