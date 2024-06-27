@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container my-4">
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+
+        <h1 id="h1_subscribe">Inscription</h1>
+
+        <br><br>
+
+        {{ form_errors(registrationForm) }}
+
+        <div class="registrationForm">
+            {{ form_start(registrationForm) }}
+                {{ form_row(registrationForm.username, { 'attr': {'class': 'rf_field' }, 'label': false }) }}
+                <br>
+                {{ form_row(registrationForm.email, { 'attr': {'class': 'rf_field' }, 'label': false }) }}
+                <br>
+                {{ form_row(registrationForm.plainPassword, { 'attr': {'class': 'rf_field' }, 'label': false }) }}
+                <br>
+                <div id="rf_terms">{{ form_row(registrationForm.agreeTerms) }}</div>
+
+                <br>
+
+                {{ form_row(registrationForm.save) }}
+
+            {{ form_end(registrationForm) }}
+
+            <a class="nav-link" id="rf_connection" href="{{ path('app_login') }}">Vous avez déjà un compte ? Connectez-vous !</a>
+        </div>
+    </div>
+{% endblock %}

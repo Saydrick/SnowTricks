@@ -8,7 +8,10 @@
 
 {% block body %}
     <div class="banner">
-        <h2 id="h2_slogan">Texte de la page d'accueil</h2>
+        {# <h2 id="h2_slogan">SNOWTRICKS</h2> #}
+        <h2 id="h2_slogan">S N O W T R I C K S</h2>
+        {# <h2 id="h2_slogan">SnowTricks</h2> #}
+        {# <h2 id="h2_slogan">S n o w T r i c k s</h2> #}
         <button class="arrow" id="banner_arrow">
             <a href="#content_tricks">&#x279C;</a>
         </button>
@@ -21,23 +24,38 @@
         <ul class="ul_tricks">
             {% for trick in tricks %}
                 <div class="trick">
-                    <img src="{{ asset('img/pas-image-disponible.png') }}" alt="">
+                    {% set media = medias[trick.id] ?? null %}
+                    <a href="{{ path('tricks', {id: trick.id, slug: trick.slug}) }}">
+                        {% if media %}
+                            <img src="{{ asset(''~ media.path ~'') }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('img/pas-image-disponible.png') }}" alt="">
+                        {% endif %}
+                    </a>
+                    
                     <li class="li_tricks">
-                        <p>{{ trick.name }}</p>
-                        <div class="btn_edit">
-                            <button>
-                                <a href="{{ path('tricks.edit', {id: trick.id, slug: trick.slug}) }}">
-                                    <img src="{{ asset('img/edit.png') }}" alt="Modifier">
-                                </a>
-                            </button>
-                            <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="POST">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit">
-                                    <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
+                        <a href="{{ path('tricks', {id: trick.id, slug: trick.slug}) }}">{{ trick.name }}</a>
+
+                        {% if app.user == trick.user %}
+                            <div class="btn_edit">
+                                <button>
+                                    <a href="{{ path('tricks.edit', {id: trick.id, slug: trick.slug}) }}">
+                                        <img src="{{ asset('img/edit.png') }}" alt="Modifier">
+                                    </a>
                                 </button>
-                            </form>
-                        </div>
-                    </li>
+                                <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit">
+                                        <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </li> 
+
+
+
+
                 </div>
             {% endfor %}
         </ul>

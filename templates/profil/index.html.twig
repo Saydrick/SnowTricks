@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container flex profil">
+
+        <div class="user_photo-container">
+            {% if user.photo %}
+                <img src="{{ asset(''~ user.photo ~'') }}" class="user_photo">
+            {% else %}
+                <img src="{{ asset('img/users/inconnu.jpg') }}" class="user_photo">
+            {% endif %}
+            <br>
+            <button class="btn btn-primary"><a href="{{ path('app_profil_edit', {username: app.user.username}) }}">Modifier la photo de profil</a></button>
+        </div>
+
+        <div class="user_info-container">
+            <p id="profil_username">{{ user.username|upper }}</p>
+            <p id="profil_email">{{ user.email }}</p>
+        </div>
+        
+    </div>
+
+{% endblock %}

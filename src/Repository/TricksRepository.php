@@ -25,24 +25,51 @@ class TricksRepository extends ServiceEntityRepository
        /**
         * @return Tricks[] Returns an array of Tricks objects
         */
-       public function findByRecentTricks(): array
-       {
-           return $this->createQueryBuilder('t')
-               ->orderBy('t.updatedAt', 'DESC')
-               ->getQuery()
-               ->getResult()
-           ;
-       }
+
+    public function findOneByID($id): ?Tricks
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :val')
+            ->setParameter('val', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
 
-       public function paginateTricks(int $limit): Paginator
-       {
-            return new Paginator($this
-                ->createQueryBuilder('t')
-                ->orderBy('t.updatedAt', 'DESC')
-                ->setMaxResults($limit)
-                ->getQuery()
-                ->setHint(Paginator::HINT_ENABLE_DISTINCT, false)
-            );
-       }
+    public function findByRecentTricks(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.updatedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    public function paginateTricks(int $limit): Paginator
+    {
+             return new Paginator($this
+                 ->createQueryBuilder('t')
+                 ->orderBy('t.updatedAt', 'DESC')
+                 ->setMaxResults($limit)
+                 ->getQuery()
+                 ->setHint(Paginator::HINT_ENABLE_DISTINCT, false));
+    }
+
+    public function findLastID(): int
+    {
+        try {
+            return (int) $this->createQueryBuilder('t')
+              ->select('t.id')
+              ->orderBy('t.id', 'DESC')
+              ->setMaxResults(1)
+              ->getQuery()
+              ->getSingleScalarResult()
+            ;
+        } catch (\Doctrine\ORM\NoResultException $e) {
+             return 0;
+        }
+    }
 }

@@ -25,11 +25,10 @@ class Comments
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Users $user = null;
-
+    private ?Tricks $trick = null;
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Tricks $trick = null;
+    private ?Users $user = null;
 
     public function getId(): ?int
     {
@@ -72,18 +71,6 @@ class Comments
         return $this;
     }
 
-    public function getUser(): ?users
-    {
-        return $this->user;
-    }
-
-    public function setUser(?users $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getTrick(): ?tricks
     {
         return $this->trick;
@@ -93,6 +80,17 @@ class Comments
     {
         $this->trick = $trick;
 
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): static
+    {
+        $this->user = $user;
         return $this;
     }
 }

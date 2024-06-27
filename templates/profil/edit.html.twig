@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container flex profil">
+
+
+        <div class="user_photo-container">
+            {{ form_start(user_form) }}
+                {% if user.photo %}
+                    <img src="{{ asset(''~ user.photo ~'') }}" class="user_photo">
+                {% else %}
+                    <img src="{{ asset('img/users/inconnu.jpg') }}" class="user_photo">
+                {% endif %}
+                {{ form_widget(user_form.mediaFile, { 'attr': { 'class': 'file-input', 'id': 'fileInput' } }) }}
+                <br>
+                {{ form_widget(user_form.save, { 'attr': { 'id': 'submit-button' } }) }}
+            {{ form_end(user_form) }}
+        </div>
+
+        <div class="user_info-container">
+            <p id="profil_username">{{ user.username|upper }}</p>
+            <p id="profil_email">{{ user.email }}</p>
+        </div>
+        
+        
+    </div>
+    
+{% endblock %}

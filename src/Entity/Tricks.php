@@ -34,17 +34,21 @@ class Tricks
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Users $user = null;
-
-    #[ORM\ManyToOne(inversedBy: 'tricks')]
     private ?TrickGroups $trick_group = null;
 
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'trick')]
     private Collection $comments;
 
-    #[ORM\OneToMany(targetEntity: Medias::class, mappedBy: 'trick', cascade: ['persist'])]
+    #[ORM\OneToMany(
+        targetEntity: Medias::class,
+        mappedBy: 'trick',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
     private Collection $medias;
+
+    #[ORM\ManyToOne(inversedBy: 'tricks')]
+    private ?Users $user = null;
 
     public function __construct()
     {
@@ -117,18 +121,6 @@ class Tricks
         return $this;
     }
 
-    public function getUser(): ?users
-    {
-        return $this->user;
-    }
-
-    public function setUser(?users $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getTrickGroup(): ?trickGroups
     {
         return $this->trick_group;
@@ -197,6 +189,18 @@ class Tricks
                 $media->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

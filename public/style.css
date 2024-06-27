@@ -1,7 +1,27 @@
 /* BODY */
+html, body {
+    height: 100%;
+}
+
+main {
+    min-height: 80%;
+}
+
 a {
     text-decoration: none;
-    color: black;
+    color: white;
+}
+
+.flex {
+    display: flex;
+}
+
+.center {
+    justify-content: center;
+}
+
+.btn-danger {
+    margin-left: 20px;
 }
 
 /* HEADER */
@@ -17,6 +37,63 @@ a {
     border-radius: 30px;
 }
 
+/* FOOTER */
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100px; /* Ajustez la hauteur selon vos besoins */
+    position: relative;
+}
+
+footer hr {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    margin: 0;
+}
+
+footer p {
+    margin: 0;
+    margin-left: 100px;
+    align-self: flex-start; /* Aligner le paragraphe à gauche */
+}
+
+/* CONNECTION */
+.registrationForm {
+    width: 30%;
+    margin: auto;
+    text-align: center;
+}
+
+.rf_field {
+    border: 0;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+}
+
+.rf_terms {
+    text-align: left;
+}
+
+#registration_form_agreeTerms {
+    border: 1px solid black;
+}
+
+#rf_connection:hover {
+    text-decoration: underline;
+    color: #0d6efd;
+}
+
+#h1_subscribe {
+    /* margin: auto; */
+    text-align: center;
+}
+
+.btn-lg {
+    margin: 10px;
+    width: 60%;
+}
 
 /* HOMEPAGE */
 .banner {
@@ -65,6 +142,10 @@ a {
     background-color: black;
 }
 
+.arrow a {
+    color: black;
+}
+
 .arrow a:hover {
     color: white;
 }
@@ -95,7 +176,7 @@ a {
     padding-right: 70px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .li_tricks {
@@ -104,6 +185,10 @@ a {
     align-items: center; 
     justify-content: space-between;
     margin: 5px;
+}
+
+.li_tricks a {
+    color: black;
 }
 
 .li_tricks p {
@@ -116,10 +201,10 @@ a {
 }
 
 .trick img {
-    /* width: 300px;
-    height: 300px; */
-    width: calc((100vw - 180px) / 6);
-    /* height: calc((100vh - 180px) / 5); */
+    width: 300px;
+    height: 300px;
+    /* width: calc((100vw - 180px) / 6);
+    height: calc((100vh - 180px) / 3); */
     border: 1px solid black;
     border-bottom: 2px solid black;
 }
@@ -129,19 +214,414 @@ a {
 }
 
 .btn_edit button {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     margin-right: 10px;
     border: none;
     background-color: white;
 }
 
 .btn_edit button img {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     border: none;
 }
 
 #btn_seeMore {
     margin: auto;
+}
+
+#btn_seeMore a {
+    color: black;
+}
+
+
+/* TRICKS */
+.trick_banner {
+    height: 600px;
+    position: relative;
+    border: 1px solid black;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+}
+
+#img_banner {
+    position: absolute;
+    top: -50%;
+    /* bottom: -25%;
+    right: 0;
+    left: 0; */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    z-index: -10;
+}
+
+.trick_edit {
+    display: flex;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    border: 1px solid black;
+}
+
+.trick_edit button {
+    border: none;
+}
+
+.info_trick {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.span_trick {
+    width: auto;
+    margin: 15px;
+    padding: 5px 10px 5px 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: lightgrey;
+    color: black;
+}
+
+.trick_creation {
+    margin: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.modify_trick {
+    font-style: italic;
+}
+
+.show-media-button {
+    display: none;
+    margin: auto;
+    padding: 10px;
+    border: none;
+    background-color: #0d6efd;
+    border-radius: 5px;
+    color: white;
+}
+
+.gallery {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.gallery-container {
+    display: flex;
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+}
+
+.gallery-images {
+    display: flex;
+    scroll-snap-align: start;
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+.gallery-images img {
+    max-width: 250px;
+    max-height: 250px;
+    margin: 10px;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    opacity: 0.5;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.prev {
+    left: 0;
+    /* padding-left: 5%; */
+}
+
+.next {
+    right: 0;
+    /* padding-right: 5%; */
+}
+
+.comments {
+    width: 75%;
+    margin: auto;
+}
+
+.comment_form {
+    display: flex;
+}
+
+.comment_message {
+    margin: auto;
+    width: 65%;
+}
+
+.comment_save {
+    margin: auto;
+    margin-left: 0;
+}
+
+#comment_bloc {
+    width: 75%;
+    margin: auto;    
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.comments_profil {
+    margin: auto;
+}
+
+.comment_photo {
+    width: 45px;
+    border: 2px solid black;
+    border-radius: 50%;    
+}
+
+.comments_trick {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;    
+}
+
+.pagination .active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+/* TRICKS EDIT*/
+#add_media {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    border-radius: 10px;
+}
+
+#trick_save {
+    justify-content: right;
+}
+
+.ul_medias {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+.li_medias {
+    list-style: none;
+    display: flex;
+    align-items: center; 
+    margin: 5px;
+    margin-bottom: 30px;
+    /* border: 1px solid black; */
+}
+
+.media img {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 5px;
+}
+
+.media_btn_edit {
+    display: flex;
+    width: fit-content;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.media_btn_edit button {
+    width: 25px;
+    height: 25px;
+    margin-right: 15px;
+    margin-left: 5px;
+    border: none;
+    background-color: white;
+}
+
+.media_btn_edit button img {
+    width: 25px;
+    height: 25px;
+    border: none;
+}
+
+.btn-suppr {
+    margin: 10px;
+}
+
+/* #media {
+    text-align: center;
+} */
+
+.btn_media {
+    display: block; 
+    margin: 0 auto;
+}
+
+.btn_media a {
+    color: white;
+}
+
+
+/* USERS */
+.profil {
+    padding-top: 10%;
+}
+
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.user_photo-container {
+    position: relative;
+    display: inline-block;
+    margin: auto;
+    
+}
+
+.user_photo {
+    display: block;
+    margin: auto;
+    width: 150px;
+    height: 150px;
+    border: 2px solid black;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+#submit-button {
+    /* display: none; */
+    margin-top: 20px;
+}
+
+.user_info-container {
+    margin: auto;
+    margin-left: 0;
+}
+
+#profil_username {
+    font-size: 36px;
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+#profil_email {
+    font-size: 24px;
+    font-style: italic;
+}
+
+
+/* RESPONSIVE */
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
+    .trick img {
+        width: 300px;
+        height: 300px;
+    }
+
+    .ul_tricks {
+        margin: 20px;
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .trick img {
+        width: 300px;
+        height: 300px;
+    }
+
+    .ul_tricks {
+        margin: 20px;
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+} 
+
+@media screen and (min-width: 426px) and (max-width: 768px) { /* HEADER */
+    #h2_slogan {
+        font-size: 36px;
+    }
+
+    .trick img {
+        width: 300px;
+        height: 300px;
+    }
+
+    .ul_tricks {
+        margin: 20px;
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+} 
+
+@media screen and (min-width: 321px) and (max-width: 425px) {
+    #h2_slogan {
+        font-size: 24px;
+    }
+
+    .trick img {
+        width: 300px;
+        height: 300px;
+    }
+
+    .ul_tricks {
+        margin: 20px;
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+} 
+
+@media screen and (max-width: 320px) {
+    #h2_slogan {
+        font-size: 24px;
+    }
+
+    .trick img {
+        width: 300px;
+        height: 300px;
+    }
+
+    .ul_tricks {
+        margin: 20px;
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+} 
+
+@media (max-width: 768px) {
+    .gallery {
+        display: none;
+    }
+    .show-media-button {
+        display: block;
+    }
 }

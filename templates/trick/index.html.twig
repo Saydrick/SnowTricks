@@ -1,9 +1,150 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('js/galleryMedias.js') }}"></script>
+    <script src="{{ asset('js/viewMedias.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 
-    <div class="container my-4">
-        <h1>Il y'aura un formulaire pour ajouter de nouvelles figures ici !</h1>
+    <div class="container-fluide">
+        <div class="trick_banner">
+            {% if firstMedia %}
+                <img src="{{ asset(''~ firstMedia.path ~'') }}" id="img_banner">
+            {% else %}
+                <img src="{{ asset('img/pas-image-disponible.png') }}" id="img_banner">
+            {% endif %}
+
+            <h2 id="h2_slogan">{{ trick.name }}</h2>
+
+            <div class="trick_edit">
+                <button>
+                    <a href="{{ path('tricks.edit', {id: trick.id, slug: trick.slug}) }}">
+                        <img src="{{ asset('img/edit.png') }}" alt="Modifier">
+                    </a>
+                </button>
+                <form action="{{ path('tricks.remove', {id: trick.id, slug: trick.slug}) }}" method="DELETE">
+                    <button type="submit">
+                        <img src="{{ asset('img/delete.png') }}" alt="Supprimer">
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <br><br>
+
+    {% if medias %}
+        
+        <button class="show-media-button">Voir médias</button>  
+        <div class="gallery">
+            <div class="gallery-container">
+                <div class="gallery-images">
+                    {% for media in medias %}
+                        {% if media.typemedia.id == 1 %}
+                            <img src="{{ asset(''~ media.path ~'') }}">
+                        {% else %}
+                            <embed src="{{ asset(''~ media.path ~'') }}">
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="prev">&lt;</button>
+            <button class="next">&gt;</button>
+        </div>
+
+    {% endif %}
+
+    <br><br>
+    
+    <div class="container">
+
+        <h2>{{ trick.description }}</h2>
+
+        <br><br>
+
+        <div class="info_trick">
+            <span class="span_trick">{{ trick.trickGroup.label }}</span>
+            <span class="trick_creation">
+                Publié le {{ trick.createdAt|date("j/m/Y") }} par <strong>{{ trick.user.username }}</strong>
+            
+                {% if trick.createdAt != trick.updatedAt %}
+                    <span class="modify_trick">modifié le {{ trick.updatedAt|date("j/m/Y") }}</span>
+                {% endif %}
+            </span>
+            
+        </div>
+
+        <div class="comments">
+            <hr>
+
+            {% if app.user %}
+                {{ form_start(commentForm) }}
+                    <div class="comment_form">
+                        <div class="comment_message">{{ form_row(commentForm.message) }}</div>
+                        <div class="comment_save">{{ form_row(commentForm.save) }}</div>
+                    </div>
+                {{ form_end(commentForm) }}
+            {% else %}
+                <h3>Vous devez être connecté pour écrire un commentaire</h3>
+            {% endif %}
+            
+            <hr>
+
+            {% if comments %}
+                {% for comment in comments %}
+                    <div id="comment_bloc">
+                        <div class="comments_profil">
+                            {% if comment.photo %}
+                                <img src="{{ asset(''~ comment.photo ~'') }}" class="comment_photo">
+                            {% else %}
+                                <img src="{{ asset('img/users/inconnu.jpg') }}" class="comment_photo">
+                            {% endif %}
+                        </div>
+                        <div class="comments_trick">
+                            <span><strong>{{ comment.username }}</strong> le {{ comment.updatedAt|date("j F Y") }}</span>
+                            <br>
+                            &emsp;&emsp; {{ comment.message }}
+                        </div>
+                        <br>           
+                    </div>
+                {% endfor %}
+
+                <nav aria-label="Page navigation example" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {# Previous button #}
+                        <li class="page-item {% if currentPage == 1 %}disabled{% endif %}">
+                            <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: currentPage - 1 }) }}" aria-label="Précédent">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        {# Pagination pages #}
+                        {% for page in 1..totalPages %}
+                            <li class="page-item {% if page == currentPage %}active{% endif %}">
+                                <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: page }) }}">{{ page }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {# Next button #}
+                        <li class="page-item {% if currentPage == totalPages %}disabled{% endif %}">
+                            <a class="page-link" href="{{ path('tricks', {id: trick.id, slug: trick.slug, page: currentPage + 1 }) }}" aria-label="Suivant">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            {% else %}
+                <h3>Soyez le premier à commenter cette figure !</h3>    
+            
+            {% endif %}
+        </div>
+
+        
+
+    </div>
+
+    <br><br><br><br><br><br>
     
 {% endblock %}
