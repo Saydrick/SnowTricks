@@ -2,62 +2,79 @@
 
 namespace App\Controller;
 
+use App\Form\NewMediaType;
 use App\Repository\MediasRepository;
 use App\Repository\TricksRepository;
-use App\Form\NewMediaType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\TypesMediaRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MediaController extends AbstractController
 {
     #[Route('/media-modifier/{id}', name: 'app_media_edit')]
     public function edit(
-        $id,
+        int $id,
         MediasRepository $mediasRepository,
         TricksRepository $tricksRepository,
-        Request $request
-    ) {
-        dd($id);
+        TypesMediaRepository $tmrepository,
+        Request $request,
+        EntityManagerInterface $em
+    ): Response
+    {
         $media = $mediasRepository->findOneByID($id);
-
-        $trick = $tricksRepository->findOneByID($media->getTrick());  // TODO Single result ?
-        $trickID = $trick[0]->getId();
-        $trickSlug = $trick[0]->getSlug();
-
-        // dd($trick);
+        
+        $trick = $tricksRepository->findOneByID($media->getTrick());
+        $trickID = $trick->getId();
+        $trickSlug = $trick->getSlug();
 
         $mediaName = explode('/', $media->getPath());
         $mediaName = explode('.', $mediaName[2]);
 
         $mediaName = $mediaName[0];
-        $mediaPath = $media->getPath();
 
         $form = $this->createForm(NewMediaType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $mediaFile */
-            $mediaFile = $form->get('mediaFile')->getData();
-            $ext = $mediaFile->getClientOriginalExtension();
+            $mediaFiles = $form->get('mediaFile')->getData();
 
-            // Remove existing file
-            $existing_files = glob($this->getParameter('kernel.project_dir') . '/public/img/tricks/' . $mediaPath);
-            foreach ($existing_files as $existing_file) {
-                if (is_file($existing_file)) {
-                    // unlink($existing_file);
-                    dd($existing_file);
+            foreach ($mediaFiles as $mediaFile) {
+                if ($mediaFile instanceof UploadedFile && !empty($mediaFile)) {
+                    $ext = $mediaFile->getClientOriginalExtension();
+                    $mediaPath = 'img/tricks/' . $mediaName . '.' . $ext;
+
+                    if ($ext === 'png' || $ext === 'jpg' || $ext === 'gif') {
+                        $mediaType = $tmrepository->findOneByLabel('photo');
+                    } else {
+                        $mediaType = $tmrepository->findOneByLabel('vidéo');
+                    }
+
+                    // Remove existing file
+                    $existing_files = glob($this->getParameter('kernel.project_dir') . '/public/img/tricks/' . $mediaName . '.*');
+                    foreach ($existing_files as $existing_file) {
+                        if (is_file($existing_file)) {
+                            unlink($existing_file);
+                        }
+                    }
+                    
+                    $mediaFile->move($this->getParameter('kernel.project_dir') . '/public/img/tricks', $mediaName . '.' . $ext);
+
+                    $media->setPath($mediaPath);
+                    $media->setTypeMedia($mediaType);
+
+                    $em->flush();        
+
+                    $this->addFlash('success', 'Le média a bien été modifié !');    
+                    return $this->redirectToRoute('tricks', ['id' => $trickID, 'slug' => $trickSlug]);
                 }
             }
-
-            // move le nouveau fichier avec le bon nom
-            $mediaFile->move($this->getParameter('kernel.project_dir') . '/public/img/tricks', $mediaName . '.' . $ext);
-
-            $this->addFlash('success', 'Le trick a bien été créé !');
-            return $this->redirectToRoute('tricks', ['id' => $trickID, 'slug' => $trickSlug]); /* RECUPERER LE TRICKS */
         }
-
+        
 
         return $this->render('media/edit.html.twig', [
             'mediaForm' => $form,
@@ -66,14 +83,35 @@ class MediaController extends AbstractController
 
 
     #[Route('/media-supprimer/{id}', name: 'app_media_delete')]
-    public function delete(): Response
+    public function delete(
+        int $id,
+        MediasRepository $mediasRepository,
+        TricksRepository $tricksRepository,
+        EntityManagerInterface $em
+    ): Response
     {
+        $media = $mediasRepository->findOneByID($id);
+        $trick = $tricksRepository->findOneByID($media->getTrick());
+        $trickID = $trick->getId();
+        $trickSlug = $trick->getSlug();
 
+        $mediaName = explode('/', $media->getPath());
+        $mediaName = explode('.', $mediaName[2]);
+        $mediaName = $mediaName[0];
 
+        // Remove existing file from BDD
+        $em->remove($media);
+        $em->flush();
 
+        // Remove existing file
+        $existing_files = glob($this->getParameter('kernel.project_dir') . '/public/img/tricks/' . $mediaName . '.*');
+        foreach ($existing_files as $existing_file) {
+            if (is_file($existing_file)) {
+                unlink($existing_file);
+            }
+        }
 
-        return $this->render('media/delete.html.twig', [
-            'controller_name' => 'MediaController',
-        ]);
+        $this->addFlash('success', 'Le média a bien été supprimé !');    
+        return $this->redirectToRoute('tricks', ['id' => $trickID, 'slug' => $trickSlug]);
     }
 }
