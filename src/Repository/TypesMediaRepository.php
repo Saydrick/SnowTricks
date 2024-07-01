@@ -21,7 +21,7 @@ class TypesMediaRepository extends ServiceEntityRepository
         parent::__construct($registry, TypesMedia::class);
     }
 
-    public function findOneByLabel($label): ?TypesMedia
+    public function findOneByLabel(string $label): ?TypesMedia
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.label = :val')

@@ -22,7 +22,7 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
-    public function findOneByID($id): ?Tricks
+    public function findOneByID(Tricks $id): ?Tricks
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.id = :val')

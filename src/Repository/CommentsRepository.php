@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comments;
+use App\Entity\Tricks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,7 +25,7 @@ class CommentsRepository extends ServiceEntityRepository
        /**
         * @return Comments[] Returns an array of Comments objects
         */
-    public function findByRecentComments($trick): array
+    public function findByRecentComments(Tricks $trick): array
     {
         return $this->createQueryBuilder('c')
             ->select('c.message', 'c.updatedAt', 'u.username', 'u.photo')

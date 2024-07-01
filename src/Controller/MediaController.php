@@ -67,12 +67,13 @@ class MediaController extends AbstractController
                     $media->setPath($mediaPath);
                     $media->setTypeMedia($mediaType);
 
-                    $em->flush();        
-
-                    $this->addFlash('success', 'Le média a bien été modifié !');    
-                    return $this->redirectToRoute('tricks', ['id' => $trickID, 'slug' => $trickSlug]);
                 }
             }
+            
+            $em->flush();        
+
+            $this->addFlash('success', 'Le média a bien été modifié !');    
+            return $this->redirectToRoute('tricks', ['id' => $trickID, 'slug' => $trickSlug]);
         }
         
 
