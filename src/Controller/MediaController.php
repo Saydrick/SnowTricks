@@ -23,10 +23,9 @@ class MediaController extends AbstractController
         TypesMediaRepository $tmrepository,
         Request $request,
         EntityManagerInterface $em
-    ): Response
-    {
+    ): Response {
         $media = $mediasRepository->findOneByID($id);
-        
+
         $trick = $tricksRepository->findOneByID($media->getTrick());
         $trickID = $trick->getId();
         $trickSlug = $trick->getSlug();
@@ -55,26 +54,31 @@ class MediaController extends AbstractController
                     }
 
                     // Remove existing file
-                    $existing_files = glob($this->getParameter('kernel.project_dir') . '/public/img/tricks/' . $mediaName . '.*');
+                    $existing_files = glob(
+                        $this->getParameter('kernel.project_dir') . '/public/img/tricks/' . $mediaName . '.*'
+                    );
                     foreach ($existing_files as $existing_file) {
                         if (is_file($existing_file)) {
                             unlink($existing_file);
                         }
                     }
-                    
-                    $mediaFile->move($this->getParameter('kernel.project_dir') . '/public/img/tricks', $mediaName . '.' . $ext);
+
+                    $mediaFile->move(
+                        $this->getParameter('kernel.project_dir') . '/public/img/tricks',
+                        $mediaName . '.' . $ext
+                    );
 
                     $media->setPath($mediaPath);
                     $media->setTypeMedia($mediaType);
-
-                    $em->flush();        
-
-                    $this->addFlash('success', 'Le média a bien été modifié !');    
-                    return $this->redirectToRoute('tricks', ['id' => $trickID, 'slug' => $trickSlug]);
                 }
             }
+
+            $em->flush();
+
+            $this->addFlash('success', 'Le média a bien été modifié !');
+            return $this->redirectToRoute('tricks', ['id' => $trickID, 'slug' => $trickSlug]);
         }
-        
+
 
         return $this->render('media/edit.html.twig', [
             'mediaForm' => $form,
@@ -88,8 +92,7 @@ class MediaController extends AbstractController
         MediasRepository $mediasRepository,
         TricksRepository $tricksRepository,
         EntityManagerInterface $em
-    ): Response
-    {
+    ): Response {
         $media = $mediasRepository->findOneByID($id);
         $trick = $tricksRepository->findOneByID($media->getTrick());
         $trickID = $trick->getId();
@@ -111,7 +114,7 @@ class MediaController extends AbstractController
             }
         }
 
-        $this->addFlash('success', 'Le média a bien été supprimé !');    
+        $this->addFlash('success', 'Le média a bien été supprimé !');
         return $this->redirectToRoute('tricks', ['id' => $trickID, 'slug' => $trickSlug]);
     }
 }

@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomepageController extends AbstractController
 {
     #[Route('/', methods: ['GET', 'HEAD'], name: 'default_route')]
-    public function default()
+    public function default(): Response
     {
         return $this->redirectToRoute('homepage');
     }

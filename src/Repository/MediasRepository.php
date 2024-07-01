@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Medias;
+use App\Entity\Tricks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,7 +22,7 @@ class MediasRepository extends ServiceEntityRepository
         parent::__construct($registry, Medias::class);
     }
 
-    public function findOneByID($id): ?Medias
+    public function findOneByID(int $id): ?Medias
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.id = :val')
@@ -32,7 +33,7 @@ class MediasRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOneByTrick($value): ?Medias
+    public function findOneByTrick(Tricks $value): ?Medias
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.trick = :val')
@@ -45,7 +46,7 @@ class MediasRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllByTrick($value): array
+    public function findAllByTrick(Tricks $value): array
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.trick = :val')
@@ -56,7 +57,7 @@ class MediasRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllMediasForTrickExceptFirst($value): array
+    public function findAllMediasForTrickExceptFirst(Tricks $value): array
     {
          return $this->createQueryBuilder('m')
              ->andWhere('m.trick = :val')
@@ -68,7 +69,7 @@ class MediasRepository extends ServiceEntityRepository
          ;
     }
 
-    public function findLastPathByTrick($trick): string
+    public function findLastPathByTrick(Tricks $trick): string
     {
         try {
               return (string) $this->createQueryBuilder('m')

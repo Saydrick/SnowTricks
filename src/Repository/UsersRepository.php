@@ -41,7 +41,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
        /**
         * @return Users[] Returns an array of Users objects
         */
-    public function findOneByEmail($value): array
+    public function findOneByEmail(string $value): array
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.email = :val')
@@ -53,7 +53,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         ;
     }
 
-    public function findOneByID($value): array
+    public function findOneByID(int $value): array
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.id = :val')

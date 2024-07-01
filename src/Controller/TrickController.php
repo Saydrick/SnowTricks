@@ -115,7 +115,7 @@ class TrickController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         TricksService $tricksService
-    ) {
+    ): Response {
 
         // Medias recovery
         $firstMedia = $mediasRepository->findOneByTrick($trick);
@@ -162,7 +162,7 @@ class TrickController extends AbstractController
         Tricks $trick,
         EntityManagerInterface $em,
         MediasRepository $mediasRepository
-    ) {
+    ): Response {
         $medias = $mediasRepository->findAllByTrick($trick);
         foreach ($medias as $media) {
             $mediaPath = $media->getPath();

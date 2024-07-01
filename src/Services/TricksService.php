@@ -9,6 +9,7 @@ use App\Repository\TypesMediaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 
 class TricksService extends AbstractController
 {
@@ -22,10 +23,10 @@ class TricksService extends AbstractController
 
 
     public function saveMedias(
-        $mediaForm,
+        FormInterface $mediaForm,
         Tricks $trick,
-        $trickID,
-        $index
+        int $trickID,
+        int $index
     ): void {
         $mediaEntity = $mediaForm->getData();
 
@@ -58,7 +59,7 @@ class TricksService extends AbstractController
                 $mediaFile->move($this->getParameter('kernel.project_dir') . '/public/img/tricks', $mediaName);
 
                 $mediaPath = $mediaName;
-                if ($mediaPath != null && !empty($mediaPath)) {
+                if ($mediaPath !== null && !empty($mediaPath)) {
                     if ($newMedia) {
                         $newMedia->setTypeMedia($mediaType);
                         $newMedia->setTrick($trick);
