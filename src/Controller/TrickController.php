@@ -132,7 +132,6 @@ class TrickController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $trickName = $trick->getName();
             $trickID = $trick->getId();
             $trickSlug = $trick->getSlug();
 
@@ -170,8 +169,7 @@ class TrickController extends AbstractController
             $existing_files = glob($this->getParameter('kernel.project_dir') . '/public/' . $mediaPath);
             foreach ($existing_files as $existing_file) {
                 if (is_file($existing_file)) {
-                    // unlink($existing_file);
-                    dd($existing_file);
+                    unlink($existing_file);
                 }
             }
         }

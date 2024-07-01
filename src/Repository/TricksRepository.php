@@ -22,10 +22,6 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
-       /**
-        * @return Tricks[] Returns an array of Tricks objects
-        */
-
     public function findOneByID($id): ?Tricks
     {
         return $this->createQueryBuilder('t')
@@ -36,6 +32,10 @@ class TricksRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    /**
+    * @return Tricks[] Returns an array of Tricks objects
+    */
 
 
     public function findByRecentTricks(): array

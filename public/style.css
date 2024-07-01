@@ -415,7 +415,9 @@ footer p {
 #add_media {
     background-color: #0d6efd;
     border-color: #0d6efd;
-    border-radius: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
 }
 
 #trick_save {
@@ -477,6 +479,8 @@ footer p {
 .btn_media {
     display: block; 
     margin: 0 auto;
+    background-color: white;
+    border-color: white;
 }
 
 .btn_media a {

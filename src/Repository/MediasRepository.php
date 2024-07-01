@@ -21,6 +21,17 @@ class MediasRepository extends ServiceEntityRepository
         parent::__construct($registry, Medias::class);
     }
 
+    public function findOneByID($id): ?Medias
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :val')
+            ->setParameter('val', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function findOneByTrick($value): ?Medias
     {
         return $this->createQueryBuilder('m')
