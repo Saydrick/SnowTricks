@@ -53,8 +53,8 @@ Utilisateur connecté :
 
 Twig
 
-## BADGE CODACY
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/79308f038ec545a696711eb8374611af)](https://app.codacy.com/gh/Saydrick/blog/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+## BADGE SYMFONY INSIGHT
+[![SymfonyInsight](https://insight.symfony.com/projects/9f7ab497-0c14-4f82-8c4c-5c31caece450/big.svg)](https://insight.symfony.com/projects/9f7ab497-0c14-4f82-8c4c-5c31caece450)
 
 ## AUTEUR
 
