@@ -4,8 +4,8 @@ framework:
     #csrf_protection: true
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
-        # name: SNOWTRICKS_COOKIE
+    session:
+        name: SNOWTRICKS_COOKIE
 
     #esi: true
     #fragments: true
