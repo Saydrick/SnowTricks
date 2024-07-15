@@ -46,6 +46,10 @@ class MediaType extends AbstractType
                     ])
                 ]
             ])
+            ->add('embed', TextType::class, [
+                'required' => false,
+                'mapped' => false
+            ])
         ;
     }
 

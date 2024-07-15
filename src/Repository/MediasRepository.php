@@ -63,7 +63,6 @@ class MediasRepository extends ServiceEntityRepository
              ->andWhere('m.trick = :val')
              ->setParameter('val', $value)
              ->orderBy('m.id', 'ASC')
-             ->setFirstResult(1)
              ->getQuery()
              ->getResult()
          ;

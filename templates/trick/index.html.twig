@@ -44,8 +44,12 @@
                     {% for media in medias %}
                         {% if media.typemedia.id == 1 %}
                             <img src="{{ asset(''~ media.path ~'') }}">
-                        {% else %}
+                        {% elseif media.typemedia.id == 2 %}
                             <embed src="{{ asset(''~ media.path ~'') }}">
+                        {% else %}
+                            <div class="embed-container">
+                                <iframe src="{{ asset(''~ media.path ~'') }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
                         {% endif %}
                     {% endfor %}
                 </div>
