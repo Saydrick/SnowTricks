@@ -36,44 +36,57 @@ class TricksService extends AbstractController
             $newMedia = null;
         }
 
-        /** @var UploadedFile $mediaFiles */
-        $mediaFiles = $mediaForm->get('mediaFile')->getData();
+        if (!empty($mediaForm->get('mediaFile')->getData()))
+        {
+            /** @var UploadedFile $mediaFiles */
+            $mediaFiles = $mediaForm->get('mediaFile')->getData();
 
-        foreach ($mediaFiles as $mediaFile) {
-            if ($mediaFile instanceof UploadedFile && !empty($mediaFile)) {
-                $ext = $mediaFile->getClientOriginalExtension();
+            foreach ($mediaFiles as $mediaFile) {
+                if ($mediaFile instanceof UploadedFile && !empty($mediaFile)) {
+                    $ext = $mediaFile->getClientOriginalExtension();
 
-                if ($ext === 'png' || $ext === 'jpg' || $ext === 'gif') {
-                    $mediaType = $this->tmrepository->findOneByLabel('photo');
-                } else {
-                    $mediaType = $this->tmrepository->findOneByLabel('vidéo');
-                }
-
-                $mediaName = $this->getNextAvailableFilename->getNextAvailableFilename(
-                    $trickID,
-                    $ext,
-                    $this->mediasRepository,
-                    $index
-                );
-
-                $mediaFile->move($this->getParameter('kernel.project_dir') . '/public/img/tricks', $mediaName);
-
-                $mediaPath = $mediaName;
-                if ($mediaPath !== null && !empty($mediaPath)) {
-                    if ($newMedia) {
-                        $newMedia->setTypeMedia($mediaType);
-                        $newMedia->setTrick($trick);
-                        $newMedia->setPath($mediaPath);
-
-                        $this->em->persist($newMedia);
+                    if ($ext === 'png' || $ext === 'jpg' || $ext === 'gif') {
+                        $mediaType = $this->tmrepository->findOneByLabel('photo');
                     } else {
-                        $mediaEntity->setTypeMedia($mediaType);
-                        $mediaEntity->setTrick($trick);
-                        $mediaEntity->setPath($mediaPath);
-
-                        $this->em->persist($mediaEntity);
+                        $mediaType = $this->tmrepository->findOneByLabel('vidéo');
                     }
+
+                    $mediaName = $this->getNextAvailableFilename->getNextAvailableFilename(
+                        $trickID,
+                        $ext,
+                        $this->mediasRepository,
+                        $index
+                    );
+
+                    $mediaFile->move($this->getParameter('kernel.project_dir') . '/public/img/tricks', $mediaName);
+
+                    $mediaPath = $mediaName;
+
                 }
+            }
+        }
+        elseif(!empty($mediaForm->get('embed')->getData()))
+        {
+            $mediaUrl = $mediaForm->get('embed')->getData();
+            $mediaExplode = explode("\"", $mediaUrl);
+            
+            $mediaPath = $mediaExplode[5];
+            $mediaType = $this->tmrepository->findOneByLabel('embed');
+        }
+
+        if ($mediaPath !== null && !empty($mediaPath)) {
+            if ($newMedia) {
+                $newMedia->setTypeMedia($mediaType);
+                $newMedia->setTrick($trick);
+                $newMedia->setPath($mediaPath);
+
+                $this->em->persist($newMedia);
+            } else {
+                $mediaEntity->setTypeMedia($mediaType);
+                $mediaEntity->setTrick($trick);
+                $mediaEntity->setPath($mediaPath);
+
+                $this->em->persist($mediaEntity);
             }
         }
     }
